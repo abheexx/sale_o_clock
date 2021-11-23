@@ -1,7 +1,15 @@
+#- my program is to fetch the price of a given product from flipkart or amazon
+#- it will automatically recognise the link of the product given and will fetch its price
+#- it will then send email notification when the desired price is reached
+#----------------------------------------------------------------------------------------------------
+# --- version 1.0 -----------------------------------------------------------------------------------
+#-------------- THANKS FOR YOUR SUPPORT -------------------------------------------------------------
 import smtplib
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
+#--------------------------------------------------------------------------------------------------- 
+#-------------------------- function for flipkart --------------------------------------------------
 def flipkart():
         global url
         html = urlopen(url)
@@ -19,6 +27,8 @@ def flipkart():
         checker=eval(temp)   
         return(checker)
 
+#--------------------------------------------------------------------------------------------------- 
+#------------------------- function for amazon -----------------------------------------------------
 def amazon():
     global url
     html = urlopen(url)
@@ -35,6 +45,8 @@ def amazon():
     checker=eval(temp)   
     return(checker)
 
+#--------------------------------------------------------------------------------------------------
+#----------------------- function to sent email notification --------------------------------------
 def send_mail():
     server = smtplib.SMTP('smtp.gmail.com',587)
     server.ehlo()
@@ -51,6 +63,8 @@ def send_mail():
     print("HEY USER, EMAIL HAS BEEN SENT SUCCESSFULLY.")
     server.quit()
 
+#--------------------------------------------------------------------------------------------------    
+#-------------------- looping for checking price starts here---------------------------------------
 def price(finamt , curramt ):
     while finamt < curramt :
         if token == 1 :
@@ -59,7 +73,8 @@ def price(finamt , curramt ):
             curramt = flipkart()    
     if finamt > curramt:
         send_mail()
-        
+
+#------------------------------- MAIN FUNCTION STARTS HERE ---------------------------------------    
 token=0    
 checker = 99999
 url = input('enter the url which you want to get notify for ')
@@ -70,3 +85,6 @@ if ('www.amazon.in' in url) or ('www.amazon.com' in url) :
 elif ('www.flipkart.com' in url) or ('www.flipkart.in' in url ):
     price(amt , flipkart())
     token = 2
+
+
+#-------------------------------------------------------------------------------------------------   
